@@ -1,0 +1,25 @@
+{
+    "name": "crm-erp-tool",
+    "version": "1.0.0",
+    "engines": {
+        "npm": "10.2.4",
+        "node": "20.9.0"
+    },
+    "scripts": {
+        "start": "node src/server.js",
+        "dev": "nodemon src/server.js --ignore public/",
+        "production": "NODE_ENV=production",
+        "setup": "node src/setup/setup.js",
+        "upgrade": "node src/setup/upgrade.js",
+        "reset": "node src/setup/reset.js"
+    },
+    "main": "server.js",
+    "author": "Ritesh",
+    "email": "mandaviyaritesh77@gmail.com.com",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Ritesh0604/CRM-ERP-Tool/"
+    },
+    "homepage": "https://github.com/Ritesh0604/CRM-ERP-Tool/#readme"
+}
