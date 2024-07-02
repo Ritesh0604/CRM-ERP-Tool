@@ -31,16 +31,37 @@ methods.delete = async (req, res) => {
     return res.status(403).json({
         success: false,
         result: null,
-        message: "you can't delete tax after it has been created",
+        message: "You can't delete tax after it has been created",
     });
 };
 
 methods.update = async (req, res) => {
-    return res.status(200).json({
-        success: true,
-        result: null,
-        message: 'Please Upgrade to Premium  Version to have full features',
-    });
+    const { id } = req.params;
+    const updates = req.body;
+
+    try {
+        const updatedTax = await Model.findByIdAndUpdate(id, updates, { new: true }).exec();
+
+        if (!updatedTax) {
+            return res.status(404).json({
+                success: false,
+                result: null,
+                message: `Tax with id ${id} not found`,
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: updatedTax,
+            message: 'Tax updated successfully',
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            result: null,
+            message: 'Error updating tax: ' + error.message,
+        });
+    }
 };
 
 module.exports = methods;
