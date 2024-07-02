@@ -48,7 +48,7 @@
     {
         "emailKey": "email_reset_password_default",
         "emailName": "Password Reset Email",
-        "emailSubject": "Password Reset  From CRM-ERP-Tool",
+        "emailSubject": "Password Reset From CRM-ERP-Tool",
         "emailBody": "<p>email_reset_password_default</p>",
         "emailVariables": [
             "name"
