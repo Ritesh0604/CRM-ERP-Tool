@@ -1,66 +1,56 @@
-// const remove = async (Model, req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         result: null,
-//         message: 'Please Upgrade to Premium  Version to have full features',
-//     });
-// };
-// module.exports = remove;
-
 const mongoose = require('mongoose');
-const PeopleModel = mongoose.model('People');
-const CompanyModel = mongoose.model('Company');
 
-const remove = async (req, res) => {
+const Client = mongoose.model('Client');
+const Company = mongoose.model('Company');
+
+const remove = async (Model, req, res) => {
+    // cannot delete client it it have one invoice or Client:
+    // check if client have invoice or quotes:
     const { id } = req.params;
 
-    try {
-        const person = await PeopleModel.findOne({ _id: id, removed: false }).exec();
-
-        if (!person) {
-            return res.status(404).json({
-                success: false,
-                result: null,
-                message: 'No person found by this id: ' + id,
-            });
-        }
-
-        // Check if person is attached to any company
-        if (person.company) {
-            const company = await CompanyModel.findOne({ _id: person.company }).exec();
-            if (company) {
-                return res.status(400).json({
-                    success: false,
-                    result: null,
-                    message: 'Cannot delete person as they are attached to a company',
-                });
-            }
-        }
-
-        // Check if person is marked as client
-        if (person.isClient) {
-            return res.status(400).json({
-                success: false,
-                result: null,
-                message: 'Cannot delete person as they are marked as a client',
-            });
-        }
-
-        person.removed = true;
-        await person.save();
-
-        return res.status(200).json({
-            success: true,
-            result: person,
-            message: 'Person removed successfully',
-        });
-    } catch (error) {
-        return res.status(500).json({
+    const client = await Client.findOne({
+        people: id,
+        removed: false,
+    }).exec();
+    if (client) {
+        return res.status(400).json({
             success: false,
             result: null,
-            message: 'An error occurred while removing the person',
+            message: 'Cannot delete people if people attached to any company or he is client',
         });
     }
-};
+    const company = await Company.findOne({
+        mainContact: id,
+        removed: false,
+    }).exec();
+    if (company) {
+        return res.status(400).json({
+            success: false,
+            result: null,
+            message: 'Cannot delete people if people attached to any company or he is client',
+        });
+    }
 
+    // if no Company or quote, delete the client
+    const result = await Model.findOneAndUpdate(
+        { _id: id, removed: false },
+        {
+            $set: {
+                removed: true,
+            },
+        }
+    ).exec();
+    if (!result) {
+        return res.status(404).json({
+            success: false,
+            result: null,
+            message: 'No people found by this id: ' + id,
+        });
+    }
+    return res.status(200).json({
+        success: true,
+        result,
+        message: 'Successfully Deleted the people by id: ' + id,
+    });
+};
 module.exports = remove;

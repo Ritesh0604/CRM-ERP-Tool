@@ -36,6 +36,7 @@ const create = async (req, res) => {
         });
     }
     req.body['createdBy'] = req.admin._id;
+    req.body['currency'] = currentInvoice.currency;
 
     const result = await Model.create(req.body);
     const fileId = 'payment-' + result._id + '.pdf';

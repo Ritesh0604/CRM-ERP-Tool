@@ -2,7 +2,7 @@
     {
         "setupCategory": "setup_config",
         "setupKey": "crm_erp_tool_app_version",
-        "setupValue": "3.0.0",
+        "setupValue": "1.0.0",
         "valueType": "string"
     },
     {

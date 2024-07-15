@@ -1,80 +1,73 @@
-// const convertQuoteToInvoice = async (req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         result: null,
-//         message: 'Please Upgrade to Premium  Version to have full features',
-//     });
-// };
-
-// module.exports = convertQuoteToInvoice;
-
 const mongoose = require('mongoose');
-const Quote = mongoose.model('Quote');
-const Invoice = mongoose.model('Invoice');
-const { increaseBySettingKey } = require('@/middlewares/settings');
-const { calculate } = require('@/helpers');
+const moment = require('moment');
 
-const convertQuoteToInvoice = async (quoteId, adminId) => {
-    try {
-        // Fetch the quote to be converted
-        const quote = await Quote.findById(quoteId).exec();
+const Model = mongoose.model('Quote');
+const InvoiceModel = mongoose.model('Invoice');
 
-        if (!quote) {
-            throw new Error(`Quote with id ${quoteId} not found.`);
-        }
+const convertQuoteToInvoice = async (req, res) => {
+    // Fetch the quote from the database
+    const quote = await Model.findOne({
+        _id: req.params.id,
+        removed: false,
+    }).exec();
 
-        // Ensure the quote is not already converted
-        if (quote.converted) {
-            throw new Error(`Quote with id ${quoteId} has already been converted.`);
-        }
-
-        // Calculate invoice totals
-        let subTotal = 0, taxTotal = 0, total = 0;
-        quote.items.forEach(item => {
-            const itemTotal = calculate.multiply(item.quantity, item.price);
-            subTotal = calculate.add(subTotal, itemTotal);
-            item.total = itemTotal; // Update item total in place
+    if (!quote) {
+        return res.status(404).json({
+            success: false,
+            result: null,
+            message: 'Quote not found',
         });
-
-        taxTotal = calculate.multiply(subTotal, quote.taxRate / 100);
-        total = calculate.add(subTotal, taxTotal);
-
-        // Create new invoice object
-        const newInvoice = new Invoice({
-            createdBy: adminId,
-            // number: /* Generate new invoice number */,
-            // year: /* Extract year from date or use current year */,
-            content: quote.content,
-            // date: /* Use current date or quote date */,
-            expiredDate: quote.expiredDate,
-            client: quote.client,
-            items: quote.items,
-            taxRate: quote.taxRate,
-            subTotal,
-            taxTotal,
-            total,
-            currency: quote.currency,
-            discount: quote.discount,
-            notes: quote.notes,
-            status: 'draft', // Initial status for new invoice
-            pdf: '', // This will be updated later after PDF generation
-        });
-
-        // Save the new invoice
-        const savedInvoice = await newInvoice.save();
-
-        // Update quote to mark it as converted
-        await Quote.findByIdAndUpdate(quoteId, { converted: true }).exec();
-
-        // Increment invoice numbering
-        increaseBySettingKey({
-            settingKey: 'last_invoice_number',
-        });
-
-        return savedInvoice;
-    } catch (error) {
-        throw new Error(`Error converting quote to invoice: ${error.message}`);
     }
+
+    // If the quote is already converted, prevent creating another invoice
+    if (quote.converted) {
+        return res.status(409).json({
+            success: false,
+            result: null,
+            message: 'Quote is already converted to an invoice.',
+        });
+    }
+
+    // Convert the quote details to invoice details
+    const invoiceData = {
+        number: quote.number,
+        year: quote.year,
+        date: moment(),
+        expiredDate: moment().add(1, 'month'),
+        client: quote.client,
+        items: quote.items.map((item) => ({
+            itemName: item.itemName,
+            description: item.description,
+            quantity: item.quantity,
+            price: item.price,
+            total: item.total,
+        })),
+        taxRate: quote.taxRate,
+        subTotal: quote.subTotal,
+        taxTotal: quote.taxTotal,
+        total: quote.total,
+        credit: quote.credit,
+        discount: quote.discount,
+        notes: quote.notes,
+    };
+
+    invoiceData['createdBy'] = req.admin._id;
+    // Creating a new document in the collection
+
+    // Create the invoice document
+    const invoice = await new InvoiceModel(invoiceData).save();
+
+    // Mark the quote as converted
+    quote['createdBy'] = req.admin._id;
+    quote.converted = true;
+    await quote.save();
+
+    // Return the created invoice
+    return res.status(200).json({
+        success: true,
+        result: quote,
+        message: 'Successfully converted quote to invoice',
+    });
 };
 
 module.exports = convertQuoteToInvoice;

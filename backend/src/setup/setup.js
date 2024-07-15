@@ -48,8 +48,13 @@ async function setupApp() {
         await Setting.insertMany(settingFiles);
         console.log('👍 Settings created : Done!');
 
+        const Currency = require('../models/appModels/Currency');
+        const { currencyList } = require('../utils/currencyList');
         const PaymentMode = require('../models/appModels/PaymentMode');
         const Taxes = require('../models/appModels/Taxes');
+
+        await Currency.insertMany(currencyList);
+        console.log('👍 Currency created : Done!');
 
         await Taxes.insertMany([
             {

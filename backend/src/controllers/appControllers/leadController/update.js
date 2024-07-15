@@ -1,84 +1,57 @@
-// const mongoose = require('mongoose');
-// const People = mongoose.model('People');
-// const Company = mongoose.model('Company');
-
-// const update = async (Model, req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         result: null,
-//         message: 'Please Upgrade to Premium  Version to have full features',
-//     });
-// };
-
-// module.exports = update;
-
 const mongoose = require('mongoose');
 const People = mongoose.model('People');
 const Company = mongoose.model('Company');
 
 const update = async (Model, req, res) => {
-    const { id } = req.params;
+    // Find document by id and updates with the required fields
 
-    try {
-        let document = await Model.findById(id).exec();
-        if (!document) {
-            return res.status(404).json({
+    if (req.body.type === 'people') {
+        if (!req.body.people) {
+            return res.status(403).json({
                 success: false,
-                result: null,
-                message: `No document found with id: ${id}`,
+                message: 'Please select a people',
             });
-        }
-
-        // Update fields based on request body
-        if (req.body.type === 'people') {
-            if (!req.body.people) {
-                return res.status(403).json({
-                    success: false,
-                    message: 'Please select a people',
-                });
-            } else {
-                let { firstname, lastname } = await People.findOne({
-                    _id: req.body.people,
-                    removed: false,
-                }).exec();
-                req.body.name = firstname + ' ' + lastname;
-                req.body.company = null;
-            }
         } else {
-            if (!req.body.company) {
-                return res.status(403).json({
-                    success: false,
-                    message: 'Please select a company',
-                });
-            } else {
-                let { name } = await Company.findOne({
-                    _id: req.body.company,
-                    removed: false,
-                }).exec();
-                req.body.name = name;
-                req.body.people = null;
-            }
+            let { firstname, lastname } = await People.findOne({
+                _id: req.body.people,
+                removed: false,
+            }).exec();
+            req.body.name = firstname + ' ' + lastname;
+            req.body.company = null;
         }
+    } else {
+        if (!req.body.company) {
+            return res.status(403).json({
+                success: false,
+                message: 'Please select a company',
+            });
+        } else {
+            let { name } = await Company.findOne({
+                _id: req.body.company,
+                removed: false,
+            }).exec();
+            req.body.name = name;
 
-        // Update document fields
-        Object.keys(req.body).forEach((key) => {
-            document[key] = req.body[key];
+            req.body.people = null;
+        }
+    }
+
+    req.body.removed = false;
+    const result = await Model.findOneAndUpdate({ _id: req.params.id, removed: false }, req.body, {
+        new: true, // return the new result instead of the old one
+        runValidators: true,
+    }).exec();
+    if (!result) {
+        return res.status(404).json({
+            success: false,
+            result: null,
+            message: 'No document found ',
         });
-
-        document.updated = Date.now();
-
-        const result = await document.save();
-
+    } else {
         return res.status(200).json({
             success: true,
             result,
-            message: 'Document updated successfully',
-        });
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            result: null,
-            message: 'Error updating document: ' + error.message,
+            message: 'we update this document ',
         });
     }
 };

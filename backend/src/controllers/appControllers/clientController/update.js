@@ -67,8 +67,7 @@ const update = async (Model, req, res) => {
                     }
                 ).exec();
 
-                updateData.name = firstname + ' ' + lastname;
-                // updateData.company = undefined;
+                updateData.company = undefined;
             }
         } else if (client.type === 'company' && updateData.company) {
             if (!updateData.company) {
@@ -101,9 +100,7 @@ const update = async (Model, req, res) => {
                         runValidators: true,
                     }
                 ).exec();
-
-                updateData.name = name;
-                // updateData.people = undefined;
+                updateData.people = undefined;
             }
         }
 

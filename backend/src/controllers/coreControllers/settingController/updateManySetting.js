@@ -1,49 +1,56 @@
-// const updateManySetting = async (req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         result: null,
-//         message: 'Please Upgrade to Premium  Version to have full features',
-//     });
-// };
-
-// module.exports = updateManySetting;
-
 const mongoose = require('mongoose');
-const Setting = mongoose.model('Setting');
+
+const Model = mongoose.model('Setting');
 
 const updateManySetting = async (req, res) => {
-    const { updates } = req.body;
+    // req/body = [{settingKey:"",settingValue}]
+    let settingsHasError = false;
+    const updateDataArray = [];
+    const { settings } = req.body;
 
-    try {
-        if (!updates || !Array.isArray(updates)) {
-            return res.status(400).json({
-                success: false,
-                result: null,
-                message: 'Invalid updates array provided',
-            });
+    for (const setting of settings) {
+        if (!setting.hasOwnProperty('settingKey') || !setting.hasOwnProperty('settingValue')) {
+            settingsHasError = true;
+            break;
         }
 
-        // Assuming updates is an array of objects with keys: settingKey, settingValue
-        const bulkOperations = updates.map(update => ({
+        const { settingKey, settingValue } = setting;
+
+        updateDataArray.push({
             updateOne: {
-                filter: { settingKey: update.settingKey },
-                update: { settingValue: update.settingValue },
-                upsert: true, // Create new document if settingKey doesn't exist
-            }
-        }));
-
-        const bulkResult = await Setting.bulkWrite(bulkOperations);
-
-        return res.status(200).json({
-            success: true,
-            result: bulkResult,
-            message: 'Settings updated successfully',
+                filter: { settingKey: settingKey },
+                update: { settingValue: settingValue },
+            },
         });
-    } catch (error) {
-        return res.status(500).json({
+    }
+
+    if (updateDataArray.length === 0) {
+        return res.status(202).json({
             success: false,
             result: null,
-            message: 'Error updating settings: ' + error.message,
+            message: 'No settings provided ',
+        });
+    }
+    if (settingsHasError) {
+        return res.status(202).json({
+            success: false,
+            result: null,
+            message: 'Settings provided has Error',
+        });
+    }
+    const result = await Model.bulkWrite(updateDataArray);
+
+    if (!result || result.nMatched < 1) {
+        return res.status(404).json({
+            success: false,
+            result: null,
+            message: 'No settings found by to update',
+        });
+    } else {
+        return res.status(200).json({
+            success: true,
+            result: [],
+            message: 'we update all settings',
         });
     }
 };

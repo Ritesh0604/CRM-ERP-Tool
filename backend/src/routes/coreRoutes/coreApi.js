@@ -1,50 +1,87 @@
 const express = require('express');
 const { catchErrors } = require('@/handlers/errorHandlers');
 const router = express.Router();
-
 const adminController = require('@/controllers/coreControllers/adminController');
 const settingController = require('@/controllers/coreControllers/settingController');
 const emailController = require('@/controllers/coreControllers/emailController');
 
 const { singleStorageUpload } = require('@/middlewares/uploadMiddleware');
 
-// Admin Management
-router.get('/admin/read/:id', catchErrors(adminController.read));
-router.patch('/admin/password-update/:id', catchErrors(adminController.updatePassword));
+const { hasPermission } = require('@/middlewares/permission');
+// //_______________________________ Admin management_______________________________
 
-// Admin Profile
-router.patch('/admin/profile/password', catchErrors(adminController.updateProfilePassword));
-router.patch('/admin/profile/update',
-    singleStorageUpload({ entity: 'admin', fieldName: 'photo', fileType: 'image' }),
-    catchErrors(adminController.updateProfile)
+router.route('/admin/create').post(hasPermission(), catchErrors(adminController.create));
+router.route('/admin/read/:id').get(hasPermission('read'), catchErrors(adminController.read));
+router.route('/admin/update/:id').patch(
+    hasPermission(),
+    // singleStorageUpload({ entity: 'setting', fieldName: 'photo', fileType: 'image' }),
+    catchErrors(adminController.update)
 );
+router.route('/admin/delete/:id').delete(hasPermission(), catchErrors(adminController.delete));
+router.route('/admin/search').get(hasPermission(), catchErrors(adminController.search));
+router.route('/admin/list').get(hasPermission(), catchErrors(adminController.list));
+router.route('/admin/profile').get(hasPermission(), catchErrors(adminController.profile));
+router.route('/admin/status/:id').patch(hasPermission(), catchErrors(adminController.status));
+router
+    .route('/admin/password-update/:id')
+    .patch(hasPermission(), catchErrors(adminController.updatePassword));
 
-// Global Setting
-router.post('/setting/create', catchErrors(settingController.create));
-router.get('/setting/read/:id', catchErrors(settingController.read));
-router.patch('/setting/update/:id', catchErrors(settingController.update));
-router.get('/setting/search', catchErrors(settingController.search));
-router.get('/setting/list', catchErrors(settingController.list));
-router.get('/setting/listAll', catchErrors(settingController.listAll));
-router.get('/setting/filter', catchErrors(settingController.filter));
-router.get('/setting/readBySettingKey/:settingKey', catchErrors(settingController.readBySettingKey));
-router.get('/setting/listBySettingKey', catchErrors(settingController.listBySettingKey));
-router.patch('/setting/updateBySettingKey/:settingKey',
-    catchErrors(settingController.updateBySettingKey)
-);
-router.patch('/setting/upload/:settingKey?',
-    singleStorageUpload({ entity: 'setting', fieldName: 'settingValue', fileType: 'image' }),
-    catchErrors(settingController.updateBySettingKey)
-);
-router.patch('/setting/updateManySetting', catchErrors(settingController.updateManySetting));
+//_______________________________ Admin Profile _______________________________
 
-// Email Templates
-router.post('/email/create', catchErrors(emailController.create));
-router.get('/email/read/:id', catchErrors(emailController.read));
-router.patch('/email/update/:id', catchErrors(emailController.update));
-router.get('/email/search', catchErrors(emailController.search));
-router.get('/email/list', catchErrors(emailController.list));
-router.get('/email/listAll', catchErrors(emailController.listAll));
-router.get('/email/filter', catchErrors(emailController.filter));
+router
+    .route('/admin/profile/password')
+    .patch(hasPermission('update'), catchErrors(adminController.updateProfilePassword));
+router
+    .route('/admin/profile/update')
+    .patch(
+        hasPermission('update'),
+        singleStorageUpload({ entity: 'admin', fieldName: 'photo', fileType: 'image' }),
+        catchErrors(adminController.updateProfile)
+    );
+
+// //____________________________________________ API for Global Setting _________________
+
+router.route('/setting/create').post(hasPermission(), catchErrors(settingController.create));
+router.route('/setting/read/:id').get(hasPermission('read'), catchErrors(settingController.read));
+router
+    .route('/setting/update/:id')
+    .patch(hasPermission('update'), catchErrors(settingController.update));
+//router.route('/setting/delete/:id).delete(hasPermission(),catchErrors(settingController.delete));
+router.route('/setting/search').get(hasPermission(), catchErrors(settingController.search));
+router.route('/setting/list').get(hasPermission(), catchErrors(settingController.list));
+router.route('/setting/listAll').get(hasPermission('read'), catchErrors(settingController.listAll));
+router.route('/setting/filter').get(hasPermission(), catchErrors(settingController.filter));
+router
+    .route('/setting/readBySettingKey/:settingKey')
+    .get(hasPermission('read'), catchErrors(settingController.readBySettingKey));
+router
+    .route('/setting/listBySettingKey')
+    .get(hasPermission('read'), catchErrors(settingController.listBySettingKey));
+router
+    .route('/setting/updateBySettingKey/:settingKey?')
+    .patch(hasPermission(), catchErrors(settingController.updateBySettingKey));
+router
+    .route('/setting/upload/:settingKey?')
+    .patch(
+        hasPermission(),
+        catchErrors(
+            singleStorageUpload({ entity: 'setting', fieldName: 'settingValue', fileType: 'image' })
+        ),
+        catchErrors(settingController.updateBySettingKey)
+    );
+router
+    .route('/setting/updateManySetting')
+    .patch(hasPermission(), catchErrors(settingController.updateManySetting));
+
+// //____________________________________________ API for Email Templates _________________
+router.route('/email/create').post(hasPermission('create'), catchErrors(emailController.create));
+router.route('/email/read/:id').get(hasPermission('read'), catchErrors(emailController.read));
+router
+    .route('/email/update/:id')
+    .patch(hasPermission('update'), catchErrors(emailController.update));
+router.route('/email/search').get(hasPermission('read'), catchErrors(emailController.search));
+router.route('/email/list').get(hasPermission('read'), catchErrors(emailController.list));
+router.route('/email/listAll').get(hasPermission('read'), catchErrors(emailController.listAll));
+router.route('/email/filter').get(hasPermission('read'), catchErrors(emailController.filter));
 
 module.exports = router;

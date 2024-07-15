@@ -1,79 +1,102 @@
-// const mail = async (req, res) => {
-//     return res.status(200).json({
-//         success: true,
-//         result: null,
-//         message: 'Please Upgrade to Premium  Version to have full features',
-//     });
-// };
-
-// module.exports = mail;
-
 const fs = require('fs');
-const path = require('path');
+const custom = require('@/controllers/pdfController');
+const { SendQuote } = require('@/emailTemplate/sendEmailTemplate');
 const mongoose = require('mongoose');
-const { SendQuote } = require('@/emailTemplate/sendEmailTemplate'); // Assuming you have an email template for quotes
-const { Resend } = require('resend'); // Assuming you have a mailing service configured
-
 const QuoteModel = mongoose.model('Quote');
+const { Resend } = require('resend');
+const { loadSettings } = require('@/middlewares/settings');
+const { useAppSettings } = require('@/settings');
 
-const sendMail = async (req, res) => {
-    const { id } = req.params;
+const mail = async (req, res) => {
+    const { id } = req.body;
 
-    try {
-        const quote = await QuoteModel.findById(id).populate('client', 'email name').exec();
+    // Throw error if no id
+    if (!id) {
+        throw { name: 'ValidationError' };
+    }
 
-        if (!quote) {
-            return res.status(404).json({
-                success: false,
-                result: null,
-                message: `No quote found with id: ${id}`,
-            });
-        }
+    const result = await QuoteModel.findOne({
+        _id: id,
+        removed: false,
+    }).exec();
 
-        const { email, name } = quote.client;
-        const subject = `Your Quote from CRM-ERP-TOOL`;
+    // Throw error if no result
+    if (!result) {
+        throw { name: 'ValidationError' };
+    }
 
-        const pdfPath = path.join('path/to/pdf/storage', quote.pdf);
+    // Continue process if result is returned
+    const { client } = result;
+    const { name } = client;
+    const email = client[client.type].email;
 
-        if (!fs.existsSync(pdfPath)) {
-            return res.status(404).json({
-                success: false,
-                result: null,
-                message: 'PDF file not found',
-            });
-        }
-
-        const resend = new Resend(process.env.RESEND_API);
-
-        const { data } = await resend.emails.send({
-            from: process.env.CRM_ERP_TOOL_EMAIL,
-            to: email,
-            subject,
-            html: SendQuote({
-                title: 'Quote from CRM-ERP-TOOL',
-                name,
-                time: new Date(quote.createdAt).toLocaleString(),
-            }),
-            attachments: [
-                {
-                    filename: path.basename(pdfPath),
-                    path: pdfPath,
-                },
-            ],
-        });
-
-        return res.status(200).json({
-            success: true,
-            result: data,
-            message: 'Quote sent successfully',
-        });
-    } catch (error) {
-        return res.status(500).json({
+    if (!email) {
+        return res.status(403).json({
             success: false,
             result: null,
-            message: 'Error sending quote: ' + error.message,
+            message: 'Client has no email , add new email and try again',
         });
     }
+
+    const modelName = 'Quote';
+
+    const fileId = modelName.toLowerCase() + '-' + result._id + '.pdf';
+    const folderPath = modelName.toLowerCase();
+    const targetLocation = `src/public/download/${folderPath}/${fileId}`;
+
+    await custom.generatePdf(
+        modelName,
+        { filename: folderPath, format: 'A4', targetLocation },
+        result,
+        async () => {
+            const { id: mailId } = await sendViaApi({
+                email,
+                name,
+                targetLocation,
+            });
+
+            if (mailId) {
+                QuoteModel.findByIdAndUpdate({ _id: id, removed: false }, { status: 'sent' })
+                    .exec()
+                    .then((data) => {
+                        // Returning successfull response
+                        return res.status(200).json({
+                            success: true,
+                            result: mailId,
+                            message: `Successfully sent quote to ${email}`,
+                        });
+                    });
+            }
+        }
+    );
 };
 
-module.exports = sendMail;
+const sendViaApi = async ({ email, name, targetLocation }) => {
+    const resend = new Resend(process.env.RESEND_API);
+
+    const settings = await loadSettings();
+    const idurar_app_email = 'noreply@idurarapp.com';
+    const idurar_app_company_email = settings['idurar_app_company_email'];
+    const company_name = settings['company_name'];
+    // Read the file to be attatched
+    const attatchedFile = fs.readFileSync(targetLocation);
+
+    // Send the mail using the send method
+    const { data } = await resend.emails.send({
+        from: idurar_app_email,
+        to: email,
+        subject: 'Quote From ' + company_name,
+        reply_to: idurar_app_company_email,
+        attachments: [
+            {
+                filename: 'Quote.pdf',
+                content: attatchedFile,
+            },
+        ],
+        html: SendQuote({ name, title: 'Quote From ' + company_name }),
+    });
+
+    return data;
+};
+
+module.exports = mail;

@@ -75,7 +75,7 @@ const forgetPassword = async (req, res, { userModel }) => {
         name: user.name,
         link,
         subject: 'Reset your password | CRM-ERP-Tool',
-        idurar_app_email,
+        crm_erp_tool_app_email,
         type: 'passwordVerification',
     });
 

@@ -37,31 +37,43 @@ methods.delete = async (req, res) => {
 
 methods.update = async (req, res) => {
     const { id } = req.params;
-    const updates = req.body;
+    const tax = await Model.findOne({
+        _id: req.params.id,
+        removed: false,
+    }).exec();
+    const { isDefault = tax.isDefault, enabled = tax.enabled } = req.body;
 
-    try {
-        const updatedTax = await Model.findByIdAndUpdate(id, updates, { new: true }).exec();
+    // if isDefault:false , we update first - isDefault:true
+    // if enabled:false and isDefault:true , we update first - isDefault:true
+    if (!isDefault || (!enabled && isDefault)) {
+        await Model.findOneAndUpdate({ _id: { $ne: id }, enabled: true }, { isDefault: true });
+    }
 
-        if (!updatedTax) {
-            return res.status(404).json({
-                success: false,
-                result: null,
-                message: `Tax with id ${id} not found`,
-            });
-        }
+    // if isDefault:true and enabled:true, we update other taxes and make is isDefault:false
+    if (isDefault && enabled) {
+        await Model.updateMany({ _id: { $ne: id } }, { isDefault: false });
+    }
 
-        return res.status(200).json({
-            success: true,
-            result: updatedTax,
-            message: 'Tax updated successfully',
-        });
-    } catch (error) {
-        return res.status(500).json({
+    const taxesCount = await Model.countDocuments({});
+
+    // if enabled:false and it's only one exist, we can't disable
+    if ((!enabled || !isDefault) && taxesCount <= 1) {
+        return res.status(422).json({
             success: false,
             result: null,
-            message: 'Error updating tax: ' + error.message,
+            message: 'You cannot disable the tax because it is the only existing one',
         });
     }
+
+    const result = await Model.findOneAndUpdate({ _id: id }, req.body, {
+        new: true,
+    });
+
+    return res.status(200).json({
+        success: true,
+        message: 'Tax updated successfully',
+        result,
+    });
 };
 
 module.exports = methods;
