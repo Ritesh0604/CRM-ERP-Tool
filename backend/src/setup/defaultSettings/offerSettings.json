@@ -3,13 +3,17 @@
         "settingCategory": "offer_settings",
         "settingKey": "offer_show_product_tax",
         "settingValue": false,
-        "valueType": "boolean"
+        "valueType": "boolean",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "offer_settings",
         "settingKey": "offer_load_default_client",
         "settingValue": false,
-        "valueType": "boolean"
+        "valueType": "boolean",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "offer_settings",
@@ -23,12 +27,16 @@
             "declined",
             "cancelled"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "offer_settings",
         "settingKey": "offer_pdf_footer",
         "settingValue": "Offer was created on a computer and is valid without the signature and seal",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     }
 ]

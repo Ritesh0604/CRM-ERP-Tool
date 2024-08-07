@@ -3,12 +3,12 @@ const bcrypt = require('bcryptjs');
 const { generate: uniqueId } = require('shortid');
 
 const updatePassword = async (userModel, req, res) => {
-    const UserPassword = mongoose.model(userModel + 'Password');
+    const UserPassword = mongoose.model(`${userModel}Password`);
 
     const reqUserName = userModel.toLowerCase();
     const userProfile = req[reqUserName];
 
-    let { password } = req.body;
+    const { password } = req.body;
 
     if (password.length < 8)
         return res.status(400).json({
@@ -46,7 +46,7 @@ const updatePassword = async (userModel, req, res) => {
     return res.status(200).json({
         success: true,
         result: {},
-        message: 'we update the password by this id: ' + userProfile._id,
+        message: `we update the password by this id: ${userProfile._id}`,
     });
 };
 

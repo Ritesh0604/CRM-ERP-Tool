@@ -1,6 +1,6 @@
 exports.migrate = (result) => {
-    let lead = result.type === 'people' ? result.people : result.company;
-    let newData = {};
+    const lead = result.type === 'people' ? result.people : result.company;
+    const newData = {};
     newData._id = result._id;
     newData.type = result.type;
     newData.status = result.status;

@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env' });
 require('dotenv').config({ path: '.env.local' });
 const { globSync } = require('glob');
-const fs = require('fs');
+const fs = require('node:fs');
 const { generate: uniqueId } = require('shortid');
 const Joi = require('joi');
 const mongoose = require('mongoose');

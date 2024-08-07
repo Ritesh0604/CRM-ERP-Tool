@@ -2,19 +2,25 @@
     {
         "settingCategory": "email_settings",
         "settingKey": "email_domain",
-        "settingValue": "idurarapp.com",
-        "valueType": "string"
+        "settingValue": "resend.dev",
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "email_settings",
         "settingKey": "email_reply_to",
-        "settingValue": "reply@idurarapp.com",
-        "valueType": "string"
+        "settingValue": "onboarding@resend.dev",
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "email_settings",
         "settingKey": "email_from",
         "settingValue": "CRM ERP Tool",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     }
 ]

@@ -1,13 +1,13 @@
-const createCRUDController = require('@/controllers/middlewaresControllers/createCRUDController');
-const methods = createCRUDController('Invoice');
+const createCRUDController = require("@/controllers/middlewaresControllers/createCRUDController");
+const methods = createCRUDController("Invoice");
 
-const sendMail = require('./sendMail');
-const create = require('./create');
-const summary = require('./summary');
-const update = require('./update');
-const remove = require('./remove');
-const paginatedList = require('./paginatedList');
-const read = require('./read');
+const sendMail = require("./sendMail");
+const create = require("./create");
+const summary = require("./summary");
+const update = require("./update");
+const remove = require("./remove");
+const paginatedList = require("./paginatedList");
+const read = require("./read");
 
 methods.mail = sendMail;
 methods.create = create;

@@ -6,7 +6,9 @@
             "people",
             "company"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
@@ -17,7 +19,9 @@
             "premium",
             "unactive"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
@@ -36,7 +40,9 @@
             "website",
             "twitter"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
@@ -49,30 +55,40 @@
             "retails",
             "cafe & restaurant"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
         "settingKey": "invoice_default_client_type",
         "settingValue": "company",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
         "settingKey": "quote_default_client_type",
         "settingValue": "company",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
         "settingKey": "pos_default_client_type",
         "settingValue": "people",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "client_settings",
         "settingKey": "pos_default_client",
         "settingValue": "609e0057246f2359b0c4c31f",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     }
 ]

@@ -1,32 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const Model = mongoose.model('Setting');
+const Model = mongoose.model("Setting");
 
 const increaseBySettingKey = async ({ settingKey }) => {
-    try {
-        if (!settingKey) {
-            return null;
-        }
+	try {
+		if (!settingKey) {
+			return null;
+		}
 
-        const result = await Model.findByIdAndUpdate(
-            { settingKey },
-            {
-                $inc: { settingValue: 1 },
-            },
-            {
-                new: true,
-                runValidators: true,
-            }
-        ).exec();
+		const result = await Model.findByIdAndUpdate(
+			{ settingKey },
+			{
+				$inc: { settingValue: 1 },
+			},
+			{
+				new: true,
+				runValidators: true,
+			},
+		).exec();
 
-        if (!result) {
-            return null;
-        } else {
-            return result;
-        }
-    } catch {
-        return null;
-    }
+		if (!result) {
+			return null;
+		}
+		return result;
+	} catch {
+		return null;
+	}
 };
 
 module.exports = increaseBySettingKey;

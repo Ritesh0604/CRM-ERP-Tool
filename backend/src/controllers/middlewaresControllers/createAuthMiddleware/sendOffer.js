@@ -1,18 +1,20 @@
-const { afterRegistrationSuccess } = require('@/emailTemplate/emailVerification');
+const {
+	afterRegistrationSuccess,
+} = require("@/emailTemplate/emailVerification");
 
-const { Resend } = require('resend');
+const { Resend } = require("resend");
 
 const sendOffer = async ({ email, name }) => {
-    const resend = new Resend(process.env.RESEND_API);
+	const resend = new Resend(process.env.RESEND_API);
 
-    const { data } = await resend.emails.send({
-        from: 'hello@idurarapp.com',
-        to: email,
-        subject: 'Customize CRM ERP Tool',
-        html: afterRegistrationSuccess({ name }),
-    });
+	const { data } = await resend.emails.send({
+		from: "onboarding@resend.dev",
+		to: email,
+		subject: "Customize CRM ERP Tool",
+		html: afterRegistrationSuccess({ name }),
+	});
 
-    return data;
+	return data;
 };
 
 module.exports = sendOffer;

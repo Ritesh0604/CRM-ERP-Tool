@@ -38,19 +38,19 @@
     {
         "setupCategory": "setup_config",
         "setupKey": "crm_erp_tool_app_email",
-        "setupValue": "",
+        "setupValue": "onboarding@resend.dev",
         "valueType": "string"
     },
     {
         "setupCategory": "setup_config",
         "setupKey": "crm_erp_tool_app_country",
-        "setupValue": "",
+        "setupValue": "USA",
         "valueType": "string"
     },
     {
         "setupCategory": "setup_config",
         "setupKey": "crm_erp_tool_app_timezone",
-        "setupValue": "",
+        "setupValue": null,
         "valueType": "string"
     },
     {

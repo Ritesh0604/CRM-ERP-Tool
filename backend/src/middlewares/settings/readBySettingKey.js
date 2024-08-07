@@ -1,23 +1,22 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const Model = mongoose.model('Setting');
+const Model = mongoose.model("Setting");
 
 const readBySettingKey = async ({ settingKey }) => {
-    try {
-        if (!settingKey) {
-            return null;
-        }
+	try {
+		if (!settingKey) {
+			return null;
+		}
 
-        const result = await Model.findOne({ settingKey });
+		const result = await Model.findOne({ settingKey });
 
-        if (!result) {
-            return null;
-        } else {
-            return result;
-        }
-    } catch {
-        return null;
-    }
+		if (!result) {
+			return null;
+		}
+		return result;
+	} catch {
+		return null;
+	}
 };
 
 module.exports = readBySettingKey;

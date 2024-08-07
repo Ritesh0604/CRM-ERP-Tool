@@ -12,11 +12,11 @@ const authUser = async (req, res, { user, databasePassword, password, UserPasswo
         });
     }
 
-    if (isMatch == true) {
+    if (isMatch === true) {
         const token = jwt.sign(
             { id: user._id },
             process.env.JWT_SECRET,
-            { expiresIn: req.body.remember ? 365 * 24 + 'h' : '24h' },
+            { expiresIn: req.body.remember ? `${365 * 24}h` : '24h' },
         );
 
         await UserPasswordModel.findOneAndUpdate(

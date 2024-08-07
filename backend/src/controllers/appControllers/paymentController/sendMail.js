@@ -75,18 +75,18 @@ const sendViaApi = async ({ email, name, targetLocation }) => {
     const resend = new Resend(process.env.RESEND_API);
 
     const settings = await loadSettings();
-    const idurar_app_email = 'noreply@idurarapp.com';
-    const idurar_app_company_email = settings['idurar_app_company_email'];
+    const crm_erp_tool_app_email = 'onboarding@resend.dev';
+    const crm_erp_tool_app_company_email = settings['crm_erp_tool_app_company_email'];
     const company_name = settings['company_name'];
     // Read the file to be attatched
     const attatchedFile = fs.readFileSync(targetLocation);
 
     // Send the mail using the send method
     const { data } = await resend.emails.send({
-        from: idurar_app_email,
+        from: crm_erp_tool_app_email,
         to: email,
         subject: 'Payment receipt From ' + company_name,
-        reply_to: idurar_app_company_email,
+        reply_to: crm_erp_tool_app_company_email,
         attachments: [
             {
                 filename: 'Payment.pdf',
@@ -94,9 +94,9 @@ const sendViaApi = async ({ email, name, targetLocation }) => {
             },
         ],
         html: SendPaymentReceipt({ name, title: 'Payment receipt From ' + company_name }),
-        });
+    });
 
-        return data;
-    };
+    return data;
+};
 
-    module.exports = mail;
+module.exports = mail;

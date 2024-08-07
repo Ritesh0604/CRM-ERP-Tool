@@ -3,19 +3,25 @@
         "settingCategory": "invoice_settings",
         "settingKey": "invoice_show_product_tax",
         "settingValue": false,
-        "valueType": "boolean"
+        "valueType": "boolean",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "invoice_settings",
         "settingKey": "invoice_load_default_client",
         "settingValue": false,
-        "valueType": "boolean"
+        "valueType": "boolean",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "invoice_settings",
         "settingKey": "invoice_pdf_footer",
         "settingValue": "Invoice was created on a computer and is valid without the signature and seal",
-        "valueType": "string"
+        "valueType": "string",
+        "isCoreSetting": true,
+        "isPrivate": false
     },
     {
         "settingCategory": "invoice_settings",
@@ -29,6 +35,8 @@
             "cancelled",
             "on hold"
         ],
-        "valueType": "array"
+        "valueType": "array",
+        "isCoreSetting": true,
+        "isPrivate": false
     }
 ]
