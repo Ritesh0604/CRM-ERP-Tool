@@ -3,8 +3,8 @@
     "private": true,
     "version": "1.0.0",
     "engines": {
-        "npm": "10.2.4",
-        "node": "20.9.0"
+        "npm": "^10.2.4",
+        "node": "^20.9.0"
     },
     "type": "module",
     "scripts": {
@@ -38,10 +38,6 @@
     "devDependencies": {
         "@types/react": "^18.2.38",
         "@types/react-dom": "^18.2.17",
-        "eslint": "^8.56.0",
-        "eslint-plugin-react": "^7.33.2",
-        "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.4",
         "prettier": "3.1.0"
     }
 }
