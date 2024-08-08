@@ -13,6 +13,10 @@ const orderSchema = new mongoose.Schema({
 		type: mongoose.Schema.ObjectId,
 		ref: "Admin",
 	},
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	assigned: {
 		type: mongoose.Schema.ObjectId,
 		ref: "Employee",

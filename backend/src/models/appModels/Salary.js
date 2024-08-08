@@ -5,8 +5,15 @@ const salarySchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
-
-	createdBy: { type: mongoose.Schema.ObjectId, ref: "Admin", required: true },
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
+	createdBy: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Admin",
+		required: true,
+	},
 	number: {
 		type: Number,
 		required: true,

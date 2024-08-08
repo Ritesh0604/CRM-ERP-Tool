@@ -10,6 +10,12 @@ const adminSchema = new Schema({
 		type: Boolean,
 		default: false,
 	},
+	branches: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: "Branch",
+		},
+	],
 	email: {
 		type: String,
 		lowercase: true,
@@ -38,4 +44,4 @@ const adminSchema = new Schema({
 	},
 });
 
-module.export = mongoose.model("Admin", adminSchema);
+module.exports = mongoose.model("Admin", adminSchema);

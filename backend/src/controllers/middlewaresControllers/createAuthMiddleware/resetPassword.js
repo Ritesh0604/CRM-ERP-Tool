@@ -43,7 +43,7 @@ const resetPassword = async (req, res, { userModel }) => {
 		return res.status(409).json({
 			success: false,
 			result: null,
-			message: "Your account is disabled, contact your account adminstrator",
+			message: "Your account is disabled, contact your account administrator",
 		});
 
 	if (!databasePassword || !user)

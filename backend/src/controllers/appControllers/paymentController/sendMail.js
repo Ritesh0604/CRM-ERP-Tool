@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('node:fs');
 const custom = require('@/controllers/pdfController');
 const { SendPaymentReceipt } = require('@/emailTemplate/sendEmailTemplate');
 const mongoose = require('mongoose');
@@ -40,7 +40,7 @@ const mail = async (req, res) => {
 
     const modelName = 'Payment';
 
-    const fileId = modelName.toLowerCase() + '-' + result._id + '.pdf';
+    const fileId = `${modelName.toLowerCase()}-${result._id}.pdf`;
     const folderPath = modelName.toLowerCase();
     const targetLocation = `src/public/download/${folderPath}/${fileId}`;
 
@@ -59,7 +59,7 @@ const mail = async (req, res) => {
                 PaymentModel.findByIdAndUpdate({ _id: id, removed: false }, { status: 'sent' })
                     .exec()
                     .then((data) => {
-                        // Returning successfull response
+                        // Returning successful response
                         return res.status(200).json({
                             success: true,
                             result: mailId,
@@ -76,8 +76,8 @@ const sendViaApi = async ({ email, name, targetLocation }) => {
 
     const settings = await loadSettings();
     const crm_erp_tool_app_email = 'onboarding@resend.dev';
-    const crm_erp_tool_app_company_email = settings['crm_erp_tool_app_company_email'];
-    const company_name = settings['company_name'];
+    const crm_erp_tool_app_company_email = settings.crm_erp_tool_app_company_email;
+    const company_name = settings.company_name;
     // Read the file to be attatched
     const attatchedFile = fs.readFileSync(targetLocation);
 
@@ -85,7 +85,7 @@ const sendViaApi = async ({ email, name, targetLocation }) => {
     const { data } = await resend.emails.send({
         from: crm_erp_tool_app_email,
         to: email,
-        subject: 'Payment receipt From ' + company_name,
+        subject: `Payment receipt From ${company_name}`,
         reply_to: crm_erp_tool_app_company_email,
         attachments: [
             {
@@ -93,7 +93,7 @@ const sendViaApi = async ({ email, name, targetLocation }) => {
                 content: attatchedFile,
             },
         ],
-        html: SendPaymentReceipt({ name, title: 'Payment receipt From ' + company_name }),
+        html: SendPaymentReceipt({ name, title: `Payment receipt From ${company_name}` }),
     });
 
     return data;

@@ -5,14 +5,28 @@ const schema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
-
-	product: { type: mongoose.Schema.ObjectId, ref: "Product", required: true },
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
+	product: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Product",
+		required: true,
+	},
 	hasOrder: {
 		type: Boolean,
 		default: false,
 	},
-	order: { type: mongoose.Schema.ObjectId, ref: "Order", required: true },
-	adjustmentType: { type: String, enum: ["increase", "decrease"] },
+	order: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Order",
+		required: true,
+	},
+	adjustmentType: {
+		type: String,
+		enum: ["increase", "decrease"],
+	},
 	reasonType: {
 		type: String,
 		enum: ["returned", "damaged", "change", "refund", "other"],

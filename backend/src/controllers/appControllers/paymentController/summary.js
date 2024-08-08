@@ -13,7 +13,7 @@ const summary = async (req, res) => {
 
     const currentCurrency = currency
         ? currency.toUpperCase()
-        : settings['default_currency_code'].toUpperCase();
+        : settings.default_currency_code.toUpperCase();
 
     if (type) {
         if (['week', 'month', 'year'].includes(type)) {
@@ -28,8 +28,8 @@ const summary = async (req, res) => {
     }
 
     const currentDate = moment();
-    let startDate = currentDate.clone().startOf(defaultType);
-    let endDate = currentDate.clone().endOf(defaultType);
+    const startDate = currentDate.clone().startOf(defaultType);
+    const endDate = currentDate.clone().endOf(defaultType);
 
     const result = await Model.aggregate([
         {

@@ -22,7 +22,7 @@ const remove = async (req, res) => {
     const { id: invoiceId, total, discount, credit: previousCredit } = previousPayment.invoice;
 
     // Find the document by id and delete it
-    let updates = {
+    const updates = {
         removed: true,
     };
     // Find the document by id and delete it
@@ -35,7 +35,7 @@ const remove = async (req, res) => {
     ).exec();
     // If no results found, return document not found
 
-    let paymentStatus =
+    const paymentStatus =
         total - discount === previousCredit - previousAmount
             ? 'paid'
             : previousCredit - previousAmount > 0

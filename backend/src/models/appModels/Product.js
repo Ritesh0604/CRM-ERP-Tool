@@ -5,6 +5,10 @@ const schema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	branches: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	enabled: {
 		type: Boolean,
 		default: true,

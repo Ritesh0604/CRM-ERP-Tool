@@ -10,6 +10,10 @@ const purchaseSchema = new mongoose.Schema({
 		ref: "Admin",
 		required: true,
 	},
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	number: {
 		type: Number,
 		required: true,

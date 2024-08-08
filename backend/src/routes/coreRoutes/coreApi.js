@@ -18,6 +18,7 @@ router
 	.get(hasPermission("read"), catchErrors(adminController.read));
 router.route("/admin/update/:id").patch(
 	hasPermission(),
+	//after test upload successfully you can remove commit from this
 	// singleStorageUpload({ entity: 'setting', fieldName: 'photo', fileType: 'image' }),
 	catchErrors(adminController.update),
 );
@@ -48,17 +49,17 @@ router
 		hasPermission("update"),
 		catchErrors(adminController.updateProfilePassword),
 	);
-router
-	.route("/admin/profile/update")
-	.patch(
-		hasPermission("update"),
+router.route("/admin/profile/update").patch(
+	hasPermission("update"),
+	catchErrors(
 		singleStorageUpload({
 			entity: "admin",
 			fieldName: "photo",
 			fileType: "image",
 		}),
-		catchErrors(adminController.updateProfile),
-	);
+	),
+	catchErrors(adminController.updateProfile),
+);
 
 // //____________________________________________ API for Global Setting _________________
 
@@ -93,19 +94,17 @@ router
 router
 	.route("/setting/updateBySettingKey/:settingKey?")
 	.patch(hasPermission(), catchErrors(settingController.updateBySettingKey));
-router
-	.route("/setting/upload/:settingKey?")
-	.patch(
-		hasPermission(),
-		catchErrors(
-			singleStorageUpload({
-				entity: "setting",
-				fieldName: "settingValue",
-				fileType: "image",
-			}),
-		),
-		catchErrors(settingController.updateBySettingKey),
-	);
+router.route("/setting/upload/:settingKey?").patch(
+	hasPermission(),
+	catchErrors(
+		singleStorageUpload({
+			entity: "setting",
+			fieldName: "settingValue",
+			fileType: "image",
+		}),
+	),
+	catchErrors(settingController.updateBySettingKey),
+);
 router
 	.route("/setting/updateManySetting")
 	.patch(hasPermission(), catchErrors(settingController.updateManySetting));

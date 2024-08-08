@@ -5,6 +5,7 @@ const adminAuth = require("@/controllers/coreControllers/adminAuth");
 
 // Admin Authentication Routes
 router.post("/login", catchErrors(adminAuth.login));
+router.post("/register", catchErrors(adminAuth.register));
 router.post("/forget-password", catchErrors(adminAuth.forgetPassword));
 router.post("/reset-password", catchErrors(adminAuth.resetPassword));
 

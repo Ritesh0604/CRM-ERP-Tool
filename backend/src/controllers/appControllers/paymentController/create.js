@@ -35,11 +35,11 @@ const create = async (req, res) => {
             message: `The Max Amount you can add is ${maxAmount}`,
         });
     }
-    req.body['createdBy'] = req.admin._id;
-    req.body['currency'] = currentInvoice.currency;
+    req.body.createdBy = req.admin._id;
+    req.body.currency = currentInvoice.currency;
 
     const result = await Model.create(req.body);
-    const fileId = 'payment-' + result._id + '.pdf';
+    const fileId = `payment-${result._id}.pdf`;
     const updatePath = await Model.findOneAndUpdate(
         {
             _id: result._id.toString(),
@@ -52,7 +52,7 @@ const create = async (req, res) => {
     const { _id: paymentId, amount } = result;
     const { id: invoiceId, total, discount, credit } = currentInvoice;
 
-    let paymentStatus =
+    const paymentStatus =
         calculate.sub(total, discount) === calculate.add(credit, amount)
             ? 'paid'
             : calculate.add(credit, amount) > 0

@@ -5,6 +5,10 @@ const paymentSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false,
 	},
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	createdBy: {
 		type: mongoose.Schema.ObjectId,
 		ref: "Admin",

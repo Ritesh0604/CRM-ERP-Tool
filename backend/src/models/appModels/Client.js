@@ -9,6 +9,12 @@ const schema = new mongoose.Schema({
 		type: Boolean,
 		default: true,
 	},
+	branches: [
+		{
+			type: mongoose.Schema.ObjectId,
+			ref: "Branch",
+		},
+	],
 	type: {
 		type: String,
 		default: "company",

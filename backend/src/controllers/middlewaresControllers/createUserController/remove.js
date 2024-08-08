@@ -8,7 +8,6 @@ const remove = async (userModel, req, res) => {
 	// Find the document by id and delete it
 	const user = await User.findOne({
 		_id: req.params.id,
-
 		removed: false,
 	}).exec();
 

@@ -35,22 +35,9 @@ exports.generatePdf = async (
 		if (pugFiles.includes(modelName.toLowerCase())) {
 			// Compile Pug template
 
-			const loadCurrency = async () => {
-				const datas = await getData({
-					model: "Currency",
-				});
-				return datas;
-			};
-
 			const settings = await loadSettings();
 			const selectedLang = settings.crm_erp_tool_app_language;
 			const transLate = useLanguage({ selectedLang });
-			const currencyList = await loadCurrency();
-			const currentCurrency = currencyList.find(
-				(currency) =>
-					currency.currency_code.toLowerCase() ===
-					result.currency.toLowerCase(),
-			);
 
 			const {
 				currency_symbol,

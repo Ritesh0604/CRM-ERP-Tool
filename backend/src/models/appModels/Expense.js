@@ -9,6 +9,10 @@ const schema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	name: {
 		type: String,
 		trim: true,

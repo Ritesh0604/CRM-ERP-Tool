@@ -16,13 +16,13 @@ const settingSchema = new mongoose.Schema({
 	},
 	settingKey: {
 		type: String,
-		// unique: true,
+		unique: true,
 		lowercase: true,
 		required: true,
 	},
 	settingValue: {
 		type: mongoose.Schema.Types.Mixed,
-		// required: true,
+		required: true,
 	},
 	valueType: {
 		type: String,

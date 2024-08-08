@@ -37,7 +37,7 @@ const update = async (req, res) => {
         });
     }
 
-    let paymentStatus =
+    const paymentStatus =
         calculate.sub(total, discount) === calculate.add(previousCredit, changedAmount)
             ? 'paid'
             : calculate.add(previousCredit, changedAmount) > 0
@@ -80,8 +80,6 @@ const update = async (req, res) => {
         success: true,
         result,
         message: 'Successfully updated the Payment ',
-        result: null,
-        message: 'Please Upgrade to Premium  Version to have full features',
     });
 };
 

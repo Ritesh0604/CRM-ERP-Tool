@@ -10,6 +10,10 @@ const offerSchema = new mongoose.Schema({
 		ref: "Admin",
 		required: true,
 	},
+	branch: {
+		type: mongoose.Schema.ObjectId,
+		ref: "Branch",
+	},
 	converted: {
 		type: Boolean,
 		default: false,
