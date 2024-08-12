@@ -2,7 +2,7 @@
 
 ## Software Stack
 
-IDURAR is a free open-source ERP & CRM app based on the "mern-stack". It utilizes the following technologies: Node.js, React.js, Redux, Express.js, MongoDB, and AntDesign (AntD).
+ERP & CRM app based on the "mern-stack". It utilizes the following technologies: Node.js, React.js, Redux, Express.js, MongoDB, and AntDesign (AntD).
 
 ## User Management:
 

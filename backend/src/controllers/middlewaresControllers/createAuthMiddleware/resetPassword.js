@@ -16,10 +16,10 @@ const resetPassword = async (req, res, { userModel }) => {
 
 	if (!user.enabled && user.role === "owner") {
 		const settings = useAppSettings();
-		const idurar_app_email = settings.idurar_app_email;
-		const idurar_base_url = settings.idurar_base_url;
+		const crm_erp_tool_app_email = settings.crm_erp_tool_app_email;
+		const crm_erp_tool_base_url = settings.crm_erp_tool_base_url;
 
-		const url = checkAndCorrectURL(idurar_base_url);
+		const url = checkAndCorrectURL(crm_erp_tool_base_url);
 
 		const link = `${url}/verify/${user._id}/${databasePassword.emailToken}`;
 
@@ -27,7 +27,7 @@ const resetPassword = async (req, res, { userModel }) => {
 			email,
 			name: user.name,
 			link,
-			idurar_app_email,
+			crm_erp_tool_app_email,
 			emailToken: databasePassword.emailToken,
 		});
 
