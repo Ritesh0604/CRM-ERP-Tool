@@ -44,11 +44,10 @@ for (const filePath of appModelFiles) {
 	const route = {
 		entity: entity,
 		modelName: modelName,
-		controllersName: controllerName,
+		controllerName: controllerName,
 	};
 	routeList.push(route);
 }
-
 module.exports = {
 	controllersList,
 	appModelList,

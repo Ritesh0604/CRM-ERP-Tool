@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Model = mongoose.model("Quote");
 
-const custom = require("@/controllers/pdfController");
+const custom = require("@/controllers/pdfControllers");
 
 const { calculate } = require("@/helpers");
 

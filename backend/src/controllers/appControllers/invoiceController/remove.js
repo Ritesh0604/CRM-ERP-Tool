@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const ModalPayment = mongoose.model("Payment");
 
 const remove = async (req, res) => {

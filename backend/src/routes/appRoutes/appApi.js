@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { hasPermission } = require("@/middlewares/permission");
 const appControllers = require("@/controllers/appControllers");
-const { routesList } = require("@/models/utils");
+const { routeList } = require("@/models/utils");
 
 const routerApp = (entity, controller) => {
 	router
@@ -53,7 +53,7 @@ const routerApp = (entity, controller) => {
 	}
 };
 
-for (const { entity, controllerName } of routesList) {
+for (const { entity, controllerName } of routeList) {
 	const controller = appControllers[controllerName];
 	routerApp(entity, controller);
 }

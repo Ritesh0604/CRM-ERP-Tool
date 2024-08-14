@@ -1,4 +1,4 @@
-const custom = require("@/controllers/pdfController");
+const custom = require("@/controllers/pdfControllers");
 const { download } = require("@/locale/translation/en_us");
 const mongoose = require("mongoose");
 

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Model = mongoose.model("Invoice");
-const custom = require("@/controllers/pdfController");
+const custom = require("@/controllers/pdfControllers");
 const { calculate } = require("@/helpers");
 const schema = require("./schemaValidate");
 

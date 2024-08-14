@@ -1,5 +1,5 @@
 const fs = require("node:fs");
-const custom = require("@/controllers/pdfController");
+const custom = require("@/controllers/pdfControllers");
 const { SendOffer } = require("@/emailTemplate/sendEmailTemplate");
 const mongoose = require("mongoose");
 const OfferModel = mongoose.model("Offer");

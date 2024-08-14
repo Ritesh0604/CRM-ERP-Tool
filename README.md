@@ -1,72 +1,72 @@
-# CRM-ERP-Tool: ERP & CRM Software
+# ERP & CRM Software
 
 ## Software Stack
 
-ERP & CRM app based on the "mern-stack". It utilizes the following technologies: Node.js, React.js, Redux, Express.js, MongoDB, and AntDesign (AntD).
+The ERP & CRM application is built on the **MERN stack**, which includes Node.js, React.js, Redux, Express.js, MongoDB, and Ant Design (AntD).
 
-## User Management:
+## User Management
 
-- Administrators can create, edit, and delete user accounts.
-- Role-based access control is implemented to manage user permissions.
-- Authentication and authorization mechanisms ensure secure access.
+- Allows administrators to create, edit, and delete user accounts.
+- Implements role-based access control to manage user permissions.
+- Provides authentication and authorization mechanisms to ensure secure access.
 
-## Customer Relationship Management (CRM):
+## Customer Relationship Management (CRM)
 
-- Users can create and manage contact records for leads, prospects, and customers.
-- Lead generation and qualification functionalities are implemented to track potential sales opportunities.
-- Tools are provided for managing customer communication history, including emails, calls, and meetings.
-- Users can schedule appointments and send notifications or reminders to customers.
+- Enables users to create and manage contact records for leads, prospects, and customers.
+- Implements lead generation and qualification functionalities to track potential sales opportunities.
+- Provides tools for managing customer communication history, including emails, calls, and meetings.
+- Allows users to schedule appointments and send notifications or reminders to customers.
 
-## Sales Management:
+## Sales Management
 
-- Users can create and manage sales orders, associating them with specific customers.
-- Inventory tracking is implemented to check product availability and update stock levels after each sale.
-- Invoices are generated and payment integration with popular payment gateways is handled.
-- Dashboards and reports are provided to monitor sales performance and analyze trends.
+- Allows users to create and manage sales orders, associating them with specific customers.
+- Implements inventory tracking to check product availability and update stock levels after each sale.
+- Generates invoices and handles payment integration with popular payment gateways.
+- Provides dashboards and reports to monitor sales performance and analyze trends.
 
-## Purchase Management:
+## Purchase Management
 
-- Users can create and manage purchase orders, specifying the quantity and desired products.
-- Supplier information is tracked and supplier relationships are managed.
-- Goods are received and inventory levels are updated accordingly.
-- Purchase invoices and payments to suppliers are handled.
+- Allows users to create and manage purchase orders, specifying the quantity and desired products.
+- Tracks supplier information and manages supplier relationships.
+- Receives goods and updates inventory levels accordingly.
+- Handles purchase invoices and payments to suppliers.
 
-## Inventory Management:
+## Inventory Management
 
-- Tools are provided to manage and track inventory levels, including stock transfers and adjustments.
-- Automatic notifications for low stock levels are set up, and purchase orders are generated when restocking is required.
-- Barcode scanning capabilities are offered for efficient inventory management.
-- Users can categorize products, define attributes, and set pricing information.
+- Provides tools to manage and track inventory levels, including stock transfers and adjustments.
+- Sets up automatic notifications for low stock levels and generates purchase orders when restocking is required.
+- Offers barcode scanning capabilities for efficient inventory management.
+- Enables users to categorize products, define attributes, and set pricing information.
 
-## Financial Management:
+## Financial Management
 
-- A general ledger system is implemented to track financial transactions, including expenses and revenue.
-- Accounts receivable and accounts payable are managed, including invoicing and payment tracking.
-- Financial reports, including balance sheets and income statements, are generated.
-- Integration with popular accounting software allows for seamless financial management.
+- Implements a general ledger system to track financial transactions, including expenses and revenue.
+- Manages accounts receivable and accounts payable, including invoicing and payment tracking.
+- Generates financial reports, including balance sheets and income statements.
+- Integrates with popular accounting software for seamless financial management.
 
-## Project Management:
+## Project Management
 
-- Project management capabilities are provided, allowing users to create and track projects.
-- Tasks can be assigned to team members, deadlines can be set, and progress can be monitored.
-- Resources can be allocated and project expenses can be tracked.
-- Collaboration features such as document sharing and real-time communication are offered.
+- Provides project management capabilities, allowing users to create and track projects.
+- Assigns tasks to team members, sets deadlines, and monitors progress.
+- Allocates resources and tracks project expenses.
+- Offers collaboration features such as document sharing and real-time communication.
 
-## Reporting and Analytics:
+## Reporting and Analytics
 
-- Comprehensive reports and analytics are generated on various aspects of the business.
-- Customizable dashboards are provided to monitor key performance indicators (KPIs).
-- Users can define custom reports based on specific requirements.
-- Data visualization techniques are implemented to present information in a visually appealing manner.
+- Generates comprehensive reports and analytics on various aspects of the business.
+- Provides customizable dashboards to monitor key performance indicators (KPIs).
+- Allows users to define custom reports based on specific requirements.
+- Implements data visualization techniques to present information in a visually appealing manner.
 
-## Integration and Customization:
+## Integration and Customization
 
-- Integration with popular third-party applications or APIs, such as email marketing tools or CRM platforms, is enabled.
-- The app's functionality and appearance can be customized based on specific business needs.
-- An API or webhooks are provided to facilitate data exchange between the ERP & CRM app and other systems.
+- Enables integration with popular third-party applications or APIs, such as email marketing tools or CRM platforms.
+- Allows customization of the app's functionality and appearance based on specific business needs.
+- Provides an API or webhooks to facilitate data exchange between the ERP & CRM app and other systems.
 
-## User-friendly Interface:
+## User-friendly Interface
 
-- An intuitive, responsive, and user-friendly interface is designed using React.js and Ant Design.
-- Easy-to-use navigation menus, search functionalities, and filters are implemented.
-- A consistent and visually appealing UI is ensured across different devices and screen sizes.
+- Designs an intuitive, responsive, and user-friendly interface using React.js and Ant Design.
+- Implements easy-to-use navigation menus, search functionalities, and filters.
+- Ensures a consistent and visually appealing UI across different devices and screen sizes.

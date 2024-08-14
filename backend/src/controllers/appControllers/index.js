@@ -1,5 +1,7 @@
+const mongoose = require("mongoose");
+
 const createCRUDController = require("@/controllers/middlewaresControllers/createCRUDController");
-const { routesList } = require("@/models/utils");
+const { routeList } = require("@/models/utils");
 
 const { globSync } = require("glob");
 const path = require("node:path");
@@ -24,11 +26,11 @@ const appControllers = () => {
 				controllers[controllerName] = customController;
 			}
 		} catch (err) {
-			throw new Error(err.message);
+			throw new Error(`This is the error: ${err.message}`);
 		}
 	}
 
-	for (const { modelName, controllerName } of routesList) {
+	for (const { modelName, controllerName } of routeList) {
 		if (!hasCustomControllers.includes(controllerName)) {
 			controllers[controllerName] = createCRUDController(modelName);
 		}

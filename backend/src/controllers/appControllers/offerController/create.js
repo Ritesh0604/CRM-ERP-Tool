@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Model = mongoose.model("Offer");
 
-const custom = require("@/controllers/pdfController");
+const custom = require("@/controllers/pdfControllers");
 const { checkCurrency } = require("@/utils/currency");
 
 const { calculate } = require("@/helpers");
