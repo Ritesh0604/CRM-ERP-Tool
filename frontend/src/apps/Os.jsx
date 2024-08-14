@@ -20,7 +20,7 @@ const DefaultApp = () => (
 	</Localization>
 );
 
-export default function IdurarOs() {
+export default function Os() {
 	const { isLoggedIn } = useSelector(selectAuth);
 
 	// Online state

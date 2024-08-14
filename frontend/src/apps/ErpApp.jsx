@@ -45,8 +45,8 @@ export default function ErpCrmApp() {
 
 	useEffect(() => {
 		const { loadDefaultLang } = storePersist.get("firstVisit");
-		if (appSettings.idurar_app_language && !loadDefaultLang) {
-			dispatch(translateAction.translate(appSettings.idurar_app_language));
+		if (appSettings.crm_erp_tool_app_language && !loadDefaultLang) {
+			dispatch(translateAction.translate(appSettings.crm_erp_tool_app_language));
 			window.localStorage.setItem(
 				"firstVisit",
 				JSON.stringify({ loadDefaultLang: true }),

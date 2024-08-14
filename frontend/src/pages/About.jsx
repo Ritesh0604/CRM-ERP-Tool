@@ -7,7 +7,7 @@ const About = () => {
 	return (
 		<Result
 			status="info"
-			title={"IDURAR"}
+			title={"CRM-ERP-Tool"}
 			subTitle={translate(
 				"The ERP & CRM application is built on the **MERN stack**, which includes Node.js, React.js, Redux, Express.js, MongoDB, and Ant Design(AntD).",
 			)}
