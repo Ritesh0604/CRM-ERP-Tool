@@ -1,18 +1,3 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
-.env
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,3 +8,35 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/dist
+dist-ssr
+
+# misc
+*.local
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+temp.env
+
+#logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+

@@ -48,6 +48,18 @@ const RegisterPage = () => {
 						>
 							{translate("Register")}
 						</Button>
+						<Button
+							type="primary"
+							htmlType="button"
+							className="login-form-button"
+							loading={isLoading}
+							size="large"
+							onClick={() => {
+								navigate("/login");
+							}}
+						>
+							{translate("Log in")}
+						</Button>
 					</Form.Item>
 				</Form>
 			</Loading>

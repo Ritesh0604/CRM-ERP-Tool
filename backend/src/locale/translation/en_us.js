@@ -543,4 +543,4 @@ const lang = {
 	date_format: "Date Format",
 	server_url: "Server Url",
 };
-export default lang;
+module.exports=lang;
