@@ -1,0 +1,35 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /register/
+Disallow: /settings/
+Disallow: /private/
+Disallow: /api/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /user/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search
+
+# Block specific user-agents (bad bots)
+User-agent: BadBot
+Disallow: /
+
+User-agent: EvilCrawler
+Disallow: /
+
+# Blocking specific file types from being indexed
+User-agent: *
+Disallow: /*.php$
+Disallow: /*.cgi$
+Disallow: /*.pl$
+Disallow: /*.py$
+Disallow: /*.asp$
+Disallow: /*.aspx$
+Disallow: /*.cfm$
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.json$
+Disallow: /*.xml$
