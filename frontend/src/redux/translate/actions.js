@@ -1,6 +1,32 @@
 import * as actionTypes from "./types";
 
-import translation from "@/locale/translation/translation";
+import languages from "@/locale/languages";
+import coreTranslation from "@/locale/coreTranslation";
+
+async function fetchTranslation() {
+	try {
+		const translation = await import("@/locale/translation/translation");
+		return translation.default;
+	} catch (error) {
+		console.error(
+			"Error fetching translation file :~ file: actions.js:7 ~ fetchTranslation ~ fetchTranslation:",
+			error,
+		);
+	}
+}
+async function fetchOtherTranslation() {
+	try {
+		const otherTranslation = await import(
+			"@/locale/translation/otherTranslation"
+		);
+		return otherTranslation.default;
+	} catch (error) {
+		console.error(
+			"Error fetching otherTranslation file :~ file: actions.js:16 ~ fetchTranslation ~ fetchTranslation:",
+			error,
+		);
+	}
+}
 
 export const translateAction = {
 	resetState: () => (dispatch) => {
@@ -15,12 +41,21 @@ export const translateAction = {
 				type: actionTypes.REQUEST_LOADING,
 			});
 
-			const data = translation.en_us;
+			let translation;
+			if (coreTranslation.includes(value.toLowerCase())) {
+				translation = await fetchTranslation();
+			} else {
+				translation = await fetchOtherTranslation();
+			}
+
+			const data = await translation[value];
+
 			if (data) {
+                const isRtl = languages.find((l) => l.value === value).isRtl || false;
 				const LANG_STATE = {
 					result: data,
 					isRtl: isRtl,
-					langDirection: "ltr",
+					langDirection: isRtl ? "rtl" : "ltr",
 					langCode: value,
 					isLoading: false,
 					isSuccess: false,

@@ -15,7 +15,7 @@ import { useMoney, useDate } from "@/settings";
 import AutoCompleteAsync from "@/components/AutoCompleteAsync";
 import SelectAsync from "@/components/SelectAsync";
 import { generate as uniqueId } from "shortid";
-
+import SelectCurrency from "@/components/SelectCurrency";
 import { countryList } from "@/utils/countryList";
 import { selectLangDirection } from "@/redux/translate/selectors";
 import { useSelector } from "react-redux";
@@ -33,6 +33,9 @@ export default function DynamicForm({ fields, isUpdateForm = false }) {
 					(isUpdateForm && !field.disableForUpdate) ||
 					!field.disableForForm
 				) {
+					if (field.type === "selectCurrency") {
+						return <SelectCurrency />;
+					}
 					field.name = key;
 					if (!field.label) field.label = key;
 					if (field.hasFeedback)

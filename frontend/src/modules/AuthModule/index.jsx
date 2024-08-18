@@ -4,8 +4,11 @@ import { Layout, Col, Divider, Typography } from "antd";
 
 import AuthLayout from "@/layout/AuthLayout";
 import SideContent from "./SideContent";
+import SelectLanguage from "@/components/SelectLanguage";
 
 import logo from "@/style/images/crm-erp.jpg";
+import { selectLangDirection } from "@/redux/translate/selectors";
+import { useSelector } from "react-redux";
 
 const { Content } = Layout;
 const { Title } = Typography;

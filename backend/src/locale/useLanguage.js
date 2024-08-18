@@ -1,3 +1,4 @@
+const path = require("node:path");
 const { readBySettingKey } = require("@/middlewares/settings");
 
 async function getCurrentLanguage() {
@@ -31,25 +32,27 @@ const getLable = (lang, key) => {
 	}
 };
 
-const useSelector = (lang) => {
-	const filePath = `./translation/${lang}`;
-	const defaultFilePath = "./translation/en_us";
-
-	const currentTranslation = require(filePath);
-
-	if (currentTranslation) {
-		return currentTranslation;
+const useSelector = (lang = "en_us") => {
+	try {
+		const filePath = path.resolve(__dirname, `./translation/${lang}`);
+		return require(filePath);
+	} catch (error) {
+		console.warn(
+			`Language file for "${lang}" not found. Falling back to default language.`,
+		);
+		const defaultFilePath = path.resolve(__dirname, "./translation/en_us");
+		return require(defaultFilePath);
 	}
-	const langFile = require(defaultFilePath);
-	return langFile;
 };
 
-const useLanguage = ({ selectedLang }) => {
+const useLanguage = ({ selectedLang = "en_us" } = {}) => {
 	const lang = useSelector(selectedLang);
+
 	const translate = (value) => {
 		const text = getLable(lang, value);
 		return text;
 	};
+
 	return translate;
 };
 

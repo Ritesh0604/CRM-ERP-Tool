@@ -16,17 +16,22 @@ const sendMail = async ({
 }) => {
 	const resend = new Resend(process.env.RESEND_API);
 
-	const { data } = await resend.emails.send({
-		from: crm_erp_tool,
-		to: email,
-		subject,
-		html:
-			type === "emailVerification"
-				? emailVerification({ name, link, emailToken })
-				: passwordVerification({ name, link }),
-	});
-
-	return data;
+	try {
+		const response = await resend.emails.send({
+			from: crm_erp_tool_app_email,
+			to: email,
+			subject,
+			html:
+				type === "emailVerification"
+					? emailVerification({ name, link, emailToken })
+					: passwordVerification({ name, link }),
+		});
+		console.log("SendMail Response:", response); // Log response details
+		return response.data;
+	} catch (error) {
+		console.error("Error sending email:", error);
+		return null;
+	}
 };
 
 module.exports = sendMail;

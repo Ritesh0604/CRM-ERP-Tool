@@ -121,17 +121,35 @@ function Sidebar({ collapsible, isMobile = false }) {
 				<Link to={"/category/expenses"}>{translate("expenses_Category")}</Link>
 			),
 		},
-
+		{
+			key: "employee",
+			icon: <UserOutlined />,
+			label: <Link to={"/employee"}>{translate("employee")}</Link>,
+		},
 		{
 			label: translate("Settings"),
 			key: "settings",
 			icon: <SettingOutlined />,
 			children: [
 				{
+					key: "admin",
+					// icon: <TeamOutlined />,
+					label: <Link to={"/admin"}>{translate("admin")}</Link>,
+				},
+				{
 					key: "generalSettings",
 					label: <Link to={"/settings"}>{translate("settings")}</Link>,
 				},
-
+				{
+					key: "currency",
+					label: (
+						<Link to={"/settings/currency"}>{translate("currencies")}</Link>
+					),
+				},
+				{
+				  key: 'emailTemplates',
+				  label: <Link to={'/email'}>{translate('email_templates')}</Link>,
+				},
 				{
 					key: "paymentMode",
 					label: <Link to={"/payment/mode"}>{translate("payments_mode")}</Link>,

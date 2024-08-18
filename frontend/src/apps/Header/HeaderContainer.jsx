@@ -1,25 +1,34 @@
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, Dropdown, Layout } from "antd";
 
 // import Notifications from '@/components/Notification';
 
-import { LogoutOutlined, ToolOutlined, UserOutlined } from "@ant-design/icons";
+import {
+	SettingOutlined,
+	LogoutOutlined,
+	AppstoreOutlined,
+	ToolOutlined,
+	UserOutlined,
+} from "@ant-design/icons";
 
 import { selectCurrentAdmin } from "@/redux/auth/selectors";
 
 import { FILE_BASE_URL } from "@/config/serverApiConfig";
 
 import useLanguage from "@/locale/useLanguage";
+import SelectLanguage from "@/components/SelectLanguage";
+import ChooseCurrency from "@/components/ChooseCurrency";
 
 import UpgradeButton from "./UpgradeButton";
-
+import AppsButton from "./AppsButton";
 import { selectLangDirection } from "@/redux/translate/selectors";
 
 export default function HeaderContent() {
 	const currentAdmin = useSelector(selectCurrentAdmin);
 	const { Header } = Layout;
 
+	const location = useLocation();
 	const translate = useLanguage();
 
 	const ProfileDropdown = () => {
@@ -145,6 +154,9 @@ export default function HeaderContent() {
 			{/* <AppsButton /> */}
 
 			<UpgradeButton />
+			<SelectLanguage />
+
+			{location.pathname === "/" && <ChooseCurrency />}
 		</Header>
 	);
 }

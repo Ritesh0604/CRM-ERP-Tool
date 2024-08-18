@@ -12,7 +12,6 @@ const register = async (req, res, { userModel }) => {
 
 	const crm_erp_tool_registration_allowed =
 		settings.crm_erp_tool_registration_allowed;
-
 	const crm_erp_tool_app_email = settings.crm_erp_tool_app_email;
 	const crm_erp_tool_base_url = settings.crm_erp_tool_base_url;
 
@@ -21,7 +20,7 @@ const register = async (req, res, { userModel }) => {
 			success: false,
 			result: null,
 			message:
-				"Registration is not allowed , please contact application administrator",
+				"Registration is not allowed, please contact application administrator",
 		});
 	}
 
@@ -29,7 +28,7 @@ const register = async (req, res, { userModel }) => {
 	const User = mongoose.model(userModel);
 	const { name, email, password } = req.body;
 
-	// validate
+	// Validate input
 	const objectSchema = Joi.object({
 		name: Joi.string().required(),
 		email: Joi.string()
@@ -58,45 +57,95 @@ const register = async (req, res, { userModel }) => {
 		});
 	}
 
-	const salt = uniqueId();
-	const hashedPassword = bcrypt.hashSync(salt + password);
-	const emailToken = uniqueId();
+	const session = await mongoose.startSession();
+	session.startTransaction();
 
-	const savedUser = await User.create({ email, name });
+	try {
+		const salt = uniqueId();
+		const hashedPassword = bcrypt.hashSync(salt + password);
+		const emailToken = uniqueId();
 
-	const registrationDone = await UserPassword.create({
-		user: savedUser._id,
-		password: hashedPassword,
-		salt: salt,
-		emailToken,
-	});
+		// Create new user with enabled set to false initially
+		const newUser = new User({
+			email,
+			name,
+		});
+		const savedUser = await newUser.save({ session });
 
-	if (!registrationDone) {
-		await User.deleteOne({ _id: savedUser._id }).exec();
+		const registrationDone = await UserPassword.create(
+			[
+				{
+					user: savedUser._id,
+					password: hashedPassword,
+					salt: salt,
+					emailToken,
+				},
+			],
+			{ session },
+		);
 
-		return res.status(403).json({
+		if (!registrationDone) {
+			await session.abortTransaction();
+			session.endSession();
+			await User.deleteOne({ _id: savedUser._id }).exec();
+			return res.status(403).json({
+				success: false,
+				result: null,
+				message: "Document couldn't save correctly",
+			});
+		}
+
+		const url = checkAndCorrectURL(crm_erp_tool_base_url);
+		const link = `${url}/verify/${savedUser._id}/${emailToken}`;
+
+		const sendMailResponse = await sendMail({
+			email,
+			name,
+			link,
+			crm_erp_tool_app_email,
+			emailToken,
+		});
+		console.log("SendMail Response:", sendMailResponse);
+
+		if (!sendMailResponse || sendMailResponse.error) {
+			await session.abortTransaction();
+			session.endSession();
+			await User.deleteOne({ _id: savedUser._id }).exec();
+			return res.status(500).json({
+				success: false,
+				result: null,
+				message:
+					"Failed to send email. User registration has been rolled back.",
+			});
+		}
+
+		// Commit the transaction
+		await session.commitTransaction();
+
+		// Update user to set enabled to true
+		await User.findByIdAndUpdate(savedUser._id, { enabled: true }, { session });
+
+		session.endSession();
+
+		return res.status(200).json({
+			success: true,
+			result: {
+				_id: savedUser._id,
+				name: savedUser.name,
+				email: savedUser.email,
+			},
+			message: "Account registered successfully. Please verify your email.",
+		});
+	} catch (error) {
+		console.error("Registration Error:", error);
+		await session.abortTransaction();
+		session.endSession();
+		return res.status(500).json({
 			success: false,
-			result: null,
-			message: "document couldn't save correctly",
+			message: "Failed to register user. Changes rolled back.",
+			error: error.message,
 		});
 	}
-
-	const url = checkAndCorrectURL(crm_erp_tool_base_url);
-
-	const link = `${url}/verify/${savedUser._id}/${emailToken}`;
-
-	await sendMail({ email, name, link, crm_erp_tool_app_email });
-	// Email verification logic here
-
-	return res.status(200).json({
-		success: true,
-		result: {
-			_id: savedUser._id,
-			name: savedUser.name,
-			email: savedUser.email,
-		},
-		message: "Account registered successfully. Please verify your email.",
-	});
 };
 
 module.exports = register;

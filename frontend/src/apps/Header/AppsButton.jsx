@@ -1,12 +1,12 @@
-import { Avatar, Button, Flex, Popover } from "antd";
+import { Avatar, Popover, Button, Flex } from "antd";
 
-// import Notifications from './components/Notification';
+// import Notifications from '@/components/Notification';
 
-import { AppstoreOutlined } from ".ant-design/icons";
+import { AppstoreOutlined } from "@ant-design/icons";
 
-import useLanguage from "./locale/useLanguage";
+import useLanguage from "@/locale/useLanguage";
 
-import { useAppContext } from "./context/appContext";
+import { useAppContext } from "@/context/appContext";
 
 export default function AppsButton() {
 	const { state: stateApp, appContextAction } = useAppContext();

@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useLanguage from "@/locale/useLanguage";
 
 import { settingsAction } from "@/redux/settings/actions";
-
+import { currencyAction } from "@/redux/currency/actions";
 import { advancedCrud } from "@/redux/advancedCrud/actions";
 import { selectCreatedItem } from "@/redux/advancedCrud/selectors";
 
@@ -39,6 +39,7 @@ export default function CreateItem({ config, CreateForm }) {
 
 	useEffect(() => {
 		dispatch(settingsAction.list({ entity: "setting" }));
+		dispatch(currencyAction.list());
 	}, [dispatch]);
 
 	const { entity } = config;

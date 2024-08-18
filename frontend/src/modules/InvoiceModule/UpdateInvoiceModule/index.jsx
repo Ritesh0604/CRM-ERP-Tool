@@ -9,7 +9,7 @@ import PageLoader from "@/components/PageLoader";
 import { erp } from "@/redux/erp/actions";
 
 import { selectReadItem } from "@/redux/erp/selectors";
-import { useLayoutEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -24,6 +24,15 @@ export default function UpdateInvoiceModule({ config }) {
 		dispatch(erp.read({ entity: config.entity, id }));
 	}, [id, config, dispatch]);
 
+	const updateCurrency = useCallback((value) => {
+		console.log("🚀 ~ updateCurrency ~ value:", value);
+		dispatch(
+			settingsAction.updateCurrency({
+				data: { default_currency_code: value },
+			}),
+		);
+	});
+
 	const {
 		result: currentResult,
 		isSuccess,
@@ -34,8 +43,9 @@ export default function UpdateInvoiceModule({ config }) {
 		if (currentResult) {
 			const data = { ...currentResult };
 			dispatch(erp.currentAction({ actionType: "update", data }));
+			updateCurrency(currentResult.currency);
 		}
-	}, [currentResult, dispatch]);
+	}, [currentResult, dispatch, updateCurrency]);
 
 	if (isLoading) {
 		return (

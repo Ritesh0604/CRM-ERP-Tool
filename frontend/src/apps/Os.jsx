@@ -20,6 +20,15 @@ const DefaultApp = () => (
 	</Localization>
 );
 
+const checkInternetConnection = async () => {
+	try {
+		const response = await fetch("https://www.google.com", { mode: "no-cors" });
+		return response.status >= 200 && response.status < 300;
+	} catch (error) {
+		return false;
+	}
+};
+
 export default function Os() {
 	const { isLoggedIn } = useSelector(selectAuth);
 
@@ -27,34 +36,36 @@ export default function Os() {
 	const [isOnline, setIsOnline] = useState(navigator.onLine);
 
 	useEffect(() => {
-	  // Update network status
-	  const handleStatusChange = () => {
-	    setIsOnline(navigator.onLine);
-	    if (!isOnline) {
-	      console.log('🚀 ~ useEffect ~ navigator.onLine:', navigator.onLine);
-	      notification.config({
-	        duration: 20,
-	        maxCount: 1,
-	      });
-	      // Code to execute when there is internet connection
-	      notification.error({
-	        message: 'No internet connection',
-	        description: 'Cannot connect to the Internet, Check your internet network',
-	      });
-	    }
-	  };
+		// Update network status
+		const handleStatusChange = async () => {
+			const online = await checkInternetConnection();
+			setIsOnline(navigator.onLine);
+			if (!isOnline) {
+				console.log("🚀 ~ useEffect ~ navigator.onLine:", navigator.onLine);
+				notification.config({
+					duration: 20,
+					maxCount: 1,
+				});
+				// Code to execute when there is internet connection
+				notification.error({
+					message: "No internet connection",
+					description:
+						"Cannot connect to the Internet, Check your internet network",
+				});
+			}
+		};
+		handleStatusChange();
+		// Listen to the online status
+		window.addEventListener("online", handleStatusChange);
 
-	  // Listen to the online status
-	  window.addEventListener('online', handleStatusChange);
+		// Listen to the offline status
+		window.addEventListener("offline", handleStatusChange);
 
-	  // Listen to the offline status
-	  window.addEventListener('offline', handleStatusChange);
-
-	  // Specify how to clean up after this effect for performance improvment
-	  return () => {
-	    window.removeEventListener('online', handleStatusChange);
-	    window.removeEventListener('offline', handleStatusChange);
-	  };
+		// Specify how to clean up after this effect for performance improvement
+		return () => {
+			window.removeEventListener("online", handleStatusChange);
+			window.removeEventListener("offline", handleStatusChange);
+		};
 	}, [isOnline]);
 
 	if (!isLoggedIn)

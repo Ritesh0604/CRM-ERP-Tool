@@ -18,7 +18,7 @@ import { DatePicker } from "antd";
 import AutoCompleteAsync from "@/components/AutoCompleteAsync";
 
 import ItemRow from "@/modules/ErpPanelModule/ItemRow";
-
+import SelectCurrency from "@/components/SelectCurrency";
 import MoneyInputFormItem from "@/components/MoneyInputFormItem";
 import { selectFinanceSettings } from "@/redux/settings/selectors";
 import { useDate } from "@/settings";
@@ -129,7 +129,10 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
 					</Form.Item>
 				</Col>
 
-				<Col className="gutter-row" span={5}>
+				<Col className="gutter-row" span={6}>
+					<SelectCurrency />
+				</Col>
+				<Col className="gutter-row" span={4}>
 					<Form.Item
 						label={translate("status")}
 						name="status"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Form, Divider } from "antd";
 import dayjs from "dayjs";
 import { Button, Tag } from "antd";
@@ -105,6 +105,15 @@ export default function UpdateItem({ config, UpdateForm }) {
 
 		dispatch(erp.update({ entity, id, jsonData: dataToUpdate }));
 	};
+
+	const updateCurrency = useCallback((value) => {
+		dispatch(
+			settingsAction.updateCurrency({
+				data: { default_currency_code: value },
+			}),
+		);
+	});
+
 	useEffect(() => {
 		if (isSuccess) {
 			form.resetFields();
@@ -128,13 +137,15 @@ export default function UpdateItem({ config, UpdateForm }) {
 				formData.taxRate = 0;
 			}
 
+			updateCurrency(current.currency);
+
 			const { subTotal } = formData;
 
 			form.resetFields();
 			form.setFieldsValue(formData);
 			setSubTotal(subTotal);
 		}
-	}, [current, form]);
+	}, [current, form, updateCurrency]);
 
 	return (
 		<>

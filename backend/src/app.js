@@ -21,7 +21,6 @@ const fileUpload = require("express-fileupload");
 
 // create our Express app
 const app = express();
-
 const settingsCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 const loadSettings = async () => {
@@ -34,20 +33,31 @@ const loadSettings = async () => {
 };
 
 app.use(async (req, res, next) => {
-	req.settings = await loadSettings();
-	const lang = req.settings.crm_erp_tool_app_language;
-	req.translate = useLanguage(lang);
-	next();
-	const cache = settingsCache.get("crm_erp_tool_app_language");
-	if (!cache) {
-		const settingsList = await loadSettings();
-		settingsCache.mset(settingsList);
-		req.settings = settingsCache;
-		const lang = settingsCache.get("crm_erp_tool_app_language");
-		console.log("🚀 ~ file: app.js:40 ~ lang:", lang);
-		req.translate = useLanguage(lang);
-		next();
+	try {
+		req.settings = await loadSettings();
+		const lang = req.settings?.crm_erp_tool_app_language || "en_us"; // Use default if undefined
+		req.translate = useLanguage({ selectedLang: lang });
+
+		const cache = settingsCache.get("crm_erp_tool_app_language");
+		if (!cache) {
+			const settingsList = await loadSettings();
+			// console.log("🚀 ~ file: app.js ~ settingsList:", settingsList);
+
+			// biome-ignore lint/complexity/noForEach: <explanation>
+			Object.entries(settingsList).forEach(([key, value]) => {
+				settingsCache.set(key, value);
+			});
+
+			req.settings = settingsCache;
+			const cachedLang = settingsCache.get("crm_erp_tool_app_language");
+			console.log("🚀 ~ file: app.js:40 ~ cachedLang:", cachedLang);
+			req.translate = useLanguage({ selectedLang: cachedLang || "en_us" });
+		}
+	} catch (error) {
+		console.error("Error loading settings or initializing translation:", error);
+		req.translate = useLanguage({ selectedLang: "en_us" }); // Fallback to default
 	}
+	next();
 });
 
 app.use(
@@ -63,6 +73,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
+app.set("trust proxy", "127.0.0.1");
 const limiter = rateLimit({
 	windowMs: 60 * 1000, //  1 minute
 	max: 500, // Limit each IP to 100 requests per windowMs
