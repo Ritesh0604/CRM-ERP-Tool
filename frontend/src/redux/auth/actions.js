@@ -18,7 +18,8 @@ export const login =
 				isSuccess: true,
 			};
 			window.localStorage.setItem("auth", JSON.stringify(auth_state));
-			window.localStorage.removeItem("isLogout");
+            window.localStorage.removeItem("isLogout");
+            console.log("Login success");
 			dispatch({
 				type: actionTypes.REQUEST_SUCCESS,
 				payload: data.result,

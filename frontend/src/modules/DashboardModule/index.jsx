@@ -18,7 +18,7 @@ import CustomerPreviewCard from "./components/CustomerPreviewCard";
 
 import { selectMoneyFormat } from "@/redux/settings/selectors";
 import { useSelector } from "react-redux";
-import { currencies } from "@/locale/translation/en_us";
+// import { currencies } from "@/locale/translation/en_us";
 
 export default function DashboardModule() {
 	const translate = useLanguage();

@@ -121,12 +121,8 @@ const register = async (req, res, { userModel }) => {
 
 		// Commit the transaction
 		await session.commitTransaction();
-
-		// Update user to set enabled to true
-		await User.findByIdAndUpdate(savedUser._id, { enabled: true }, { session });
-
 		session.endSession();
-
+        console.log(link);
 		return res.status(200).json({
 			success: true,
 			result: {

@@ -29,6 +29,7 @@ const loadSettings = async () => {
 	datas.map(async (data) => {
 		allSettings[data.settingKey] = data.settingValue;
 	});
+	console.log("🚀 ~ file: app.js ~ allSettings:", allSettings);
 	return allSettings;
 };
 
@@ -73,7 +74,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(compression());
 
-app.set("trust proxy", "127.0.0.1");
+app.set("trust proxy", 1);
 const limiter = rateLimit({
 	windowMs: 60 * 1000, //  1 minute
 	max: 500, // Limit each IP to 100 requests per windowMs

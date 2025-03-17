@@ -13,6 +13,9 @@ export default ({ mode }) => {
 
     const config = {
         plugins: [react()],
+        build: {
+            sourcemap: true, // Ensure source maps are generated
+        },
         resolve: {
             base: '/',
             alias: {

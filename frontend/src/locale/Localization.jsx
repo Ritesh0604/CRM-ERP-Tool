@@ -13,13 +13,13 @@ export default function Localization({ children }) {
 	const { langCode, langDirection } = useSelector(selectLangState);
 
 	const [locale, setLocal] = useState();
-	// const [direction, setDirection] = useState();
+	const [direction, setDirection] = useState();
 
 	useEffect(() => {
 		const lang = antdLocale[langCode];
-		// setDirection(langDirection);
+		setDirection(langDirection);
 		setLocal(lang);
-	}, [langCode]);
+	}, [langCode, langDirection]);
 
 	if (locale) {
 		return (

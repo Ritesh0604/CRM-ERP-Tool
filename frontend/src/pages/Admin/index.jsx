@@ -91,7 +91,7 @@ export default function Admin() {
 	return (
 		<AdminCrudModule
 			createForm={<AdminForm />}
-			// updateForm={<AdminForm isUpdateForm={true} isForAdminOwner />}
+			updateForm={<AdminForm isUpdateForm={true} isForAdminOwner />}
 			config={config}
 		/>
 	);

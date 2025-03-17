@@ -36,18 +36,23 @@ export default function ErpCrmApp() {
 	const dispatch = useDispatch();
 
 	useLayoutEffect(() => {
+        console.log("Dispatching settingsAction.list");
 		dispatch(settingsAction.list({ entity: "setting" }));
-        dispatch(currencyAction.list());
+		dispatch(currencyAction.list());
 	}, [dispatch]);
 
 	const appSettings = useSelector(selectAppSettings);
+    console.log("App Settings:", appSettings); 
 
 	const { isSuccess: settingIsloaded } = useSelector(selectSettings);
+    console.log("Setting loaded state:", settingIsloaded);
 
 	useEffect(() => {
 		const { loadDefaultLang } = storePersist.get("firstVisit");
 		if (appSettings.crm_erp_tool_app_language && !loadDefaultLang) {
-			dispatch(translateAction.translate(appSettings.crm_erp_tool_app_language));
+			dispatch(
+				translateAction.translate(appSettings.crm_erp_tool_app_language),
+			);
 			window.localStorage.setItem(
 				"firstVisit",
 				JSON.stringify({ loadDefaultLang: true }),
@@ -55,7 +60,7 @@ export default function ErpCrmApp() {
 		}
 	}, [appSettings, dispatch]);
 	const langDirection = useSelector(selectLangDirection);
-
+    
 	if (settingIsloaded)
 		return (
 			<Layout
@@ -100,5 +105,5 @@ export default function ErpCrmApp() {
 				)}
 			</Layout>
 		);
-	return <PageLoader />;
+    return <PageLoader />;
 }

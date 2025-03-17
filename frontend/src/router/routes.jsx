@@ -51,6 +51,7 @@ const Company = lazy(() => import("@/pages/Company"));
 
 const About = lazy(() => import("@/pages/About"));
 const Currency = lazy(() => import("@/pages/Currency"));
+const Verify = lazy(() => import("@/pages/Verify"));
 
 const routes = {
 	expense: [],
@@ -61,6 +62,7 @@ const routes = {
 		},
 		{
 			path: "/verify/*",
+			// element: <Verify />,
 			element: <Navigate to="/" />,
 		},
 		{

@@ -6,21 +6,57 @@ import successHandler from "./successHandler";
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
 
+// Add a request interceptor
+axios.interceptors.request.use(
+	(request) => {
+		console.log("Starting Request", request);
+		return request;
+	},
+	(error) => {
+		console.error("Request Error", error);
+		return Promise.reject(error);
+	},
+);
+
+// Add a response interceptor
+axios.interceptors.response.use(
+	(response) => {
+		console.log("Response:", response);
+		return response;
+	},
+	(error) => {
+		console.error("Response Error", error);
+		return Promise.reject(error);
+	},
+);
+
 // Utility function to build query strings
 const buildQuery = (options) => {
-	let query = "?";
-	for (const key in options) {
-		if (Object.hasOwnProperty.call(options, key)) {
-			query += `${key}=${options[key]}&`;
+	const queryParams = new URLSearchParams();
+
+	for (const [key, value] of Object.entries(options)) {
+		if (Array.isArray(value)) {
+			for (const v of value) {
+				queryParams.append(key, v);
+			}
+		} else {
+			queryParams.append(key, value);
 		}
 	}
-	return query.slice(0, -1); // Remove the trailing '&'
+
+	return `?${queryParams.toString()}`;
+};
+
+const defaultHeaders = {
+	"Content-Type": "application/json",
 };
 
 const request = {
 	async create({ entity, jsonData }) {
 		try {
-			const response = await axios.post(`${entity}/create`, jsonData);
+			const response = await axios.post(`${entity}/create`, jsonData, {
+				headers: { ...defaultHeaders, ...headers },
+			});
 			successHandler(response, { notifyOnSuccess: true, notifyOnFailed: true });
 			return response.data;
 		} catch (error) {

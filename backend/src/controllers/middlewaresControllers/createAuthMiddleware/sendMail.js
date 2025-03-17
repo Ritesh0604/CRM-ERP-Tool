@@ -15,7 +15,6 @@ const sendMail = async ({
 	emailToken,
 }) => {
 	const resend = new Resend(process.env.RESEND_API);
-
 	try {
 		const response = await resend.emails.send({
 			from: crm_erp_tool_app_email,
@@ -26,7 +25,6 @@ const sendMail = async ({
 					? emailVerification({ name, link, emailToken })
 					: passwordVerification({ name, link }),
 		});
-		console.log("SendMail Response:", response); // Log response details
 		return response.data;
 	} catch (error) {
 		console.error("Error sending email:", error);

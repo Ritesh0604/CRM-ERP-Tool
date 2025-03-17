@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import useLanguage from "@/locale/useLanguage";
 
-import { Form, Button } from "antd";
+import { Form, Button, Result } from "antd";
 
 import { selectAuth } from "@/redux/auth/selectors";
 import RegisterForm from "@/forms/RegisterForm";
@@ -17,10 +17,10 @@ const RegisterPage = () => {
 	const { isLoading, isSuccess } = useSelector(selectAuth);
 	const navigate = useNavigate();
 	// const size = useSize();
-
+    console.log(`In Register.jsx: isLoading:${isLoading} isSuccess:${isSuccess}`)
+    
 	const dispatch = useDispatch();
 	const onFinish = (values) => {
-		console.log("Finished");
 		dispatch(register({ registerData: values }));
 		navigate("/");
 	};
@@ -48,25 +48,33 @@ const RegisterPage = () => {
 						>
 							{translate("Register")}
 						</Button>
-						<Button
-							type="primary"
-							htmlType="button"
-							className="login-form-button"
-							loading={isLoading}
-							size="large"
-							onClick={() => {
-								navigate("/login");
-							}}
-						>
-							{translate("Log in")}
-						</Button>
+						{translate("Or")}{" "}
+						<a href="/login"> {translate("already have account Login")} </a>
 					</Form.Item>
 				</Form>
 			</Loading>
 		);
 	};
-
-	return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign Up" />;
+	if (!isSuccess) {
+		return <AuthModule authContent={<FormContainer />} AUTH_TITLE="Sign up" />;
+	}
+	return (
+		<Result
+			status="info"
+			title={translate("Verify your account")}
+			subTitle={translate("Check your email address to verify your account")}
+			extra={
+				<Button
+					type="primary"
+					onClick={() => {
+						navigate("/login");
+					}}
+				>
+					{translate("Login")}
+				</Button>
+			}
+		/>
+	);
 };
 
 export default RegisterPage;

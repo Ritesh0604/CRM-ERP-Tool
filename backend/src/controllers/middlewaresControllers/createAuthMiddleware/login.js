@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 
 const mongoose = require("mongoose");
@@ -53,6 +51,7 @@ const login = async (req, res, { userModel }) => {
 	});
 
 	if (!user.enabled) {
+        
 		return res.status(409).json({
 			success: false,
 			result: null,

@@ -44,18 +44,8 @@ const LoginPage = () => {
 						>
 							{translate("Log in")}
 						</Button>
-						<Button
-							type="primary"
-							htmlType="button"
-							className="login-form-button"
-							loading={isLoading}
-							size="large"
-							onClick={() => {
-								navigate("/register");
-							}}
-						>
-							{translate("Register")}
-						</Button>
+						{translate("Or")}{" "}
+						<a href="/register">{translate("register now")}!</a>
 					</Form.Item>
 				</Form>
 			</Loading>

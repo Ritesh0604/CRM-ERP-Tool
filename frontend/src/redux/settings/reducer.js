@@ -1,11 +1,19 @@
 import * as actionTypes from "./types";
 
 const INITIAL_SETTINGS_STATE = {
-    crm_settings: {},
-    finance_settings: {},
-    company_settings: {},
-    app_settings: {},
-    money_format_settings: {},
+	crm_settings: {},
+	finance_settings: {},
+	company_settings: {},
+	app_settings: {},
+	money_format_settings: {
+		currency: "USD",
+		currency_symbol: "$",
+		currency_position: "before",
+		decimal_sep: ".",
+		thousand_sep: ",",
+		cent_precision: 2,
+		zero_format: false,
+	},
 };
 
 const INITIAL_STATE = {

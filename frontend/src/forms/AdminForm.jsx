@@ -79,6 +79,17 @@ export default function AdminForm({
 			)}
 
 			<Form.Item
+				label={translate("enabled")}
+				name="enabled"
+				valuePropName={"checked"}
+			>
+				<Switch
+					checkedChildren={<CheckOutlined />}
+					unCheckedChildren={<CloseOutlined />}
+				/>
+			</Form.Item>
+            
+			<Form.Item
 				label={translate("Role")}
 				name="role"
 				rules={[

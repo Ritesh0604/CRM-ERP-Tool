@@ -9,7 +9,6 @@ import Localization from "@/locale/Localization";
 import { notification } from "antd";
 
 const ErpApp = lazy(() => import("./ErpApp"));
-
 const DefaultApp = () => (
 	<Localization>
 		<AppContextProvider>
